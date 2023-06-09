@@ -84,7 +84,7 @@
                   <String fx:value="search" />
                   <String fx:value="btnShow" />
                </styleClass></Button>
-            <TextField fx:id="txtSearchinbookedappointments" layoutX="594.0" layoutY="347.0" onAction="#Searchinbookedappointments" prefHeight="34.0" prefWidth="302.0" promptText="Enter Your First Name" />
+            <TextField fx:id="txtSearchinbookedappointments" layoutX="594.0" layoutY="347.0" prefHeight="34.0" prefWidth="302.0" promptText="Enter Your First Name" />
             <TableView fx:id="freeTableView" layoutX="27.0" layoutY="392.0" prefHeight="207.0" prefWidth="539.0">
                <columns>
                   <TableColumn fx:id="idCol" prefWidth="35.0" text="ID" />
@@ -103,7 +103,7 @@
                   <TableColumn fx:id="docCommentCol" minWidth="0.0" prefWidth="230.0" text="Doctor Comment" />
                </columns>
             </TableView>
-            <Button fx:id="btnCreatNewAppointment" layoutX="27.0" layoutY="344.0" mnemonicParsing="false" onAction="#creatNewAppointment" prefHeight="36.0" prefWidth="170.0" stylesheets="@../../css/admindashboardpage.css" text="Creat new patient ">
+            <Button fx:id="btnCreatNewAppointment" layoutX="27.0" layoutY="344.0" mnemonicParsing="false" onAction="#createNewAppointment" prefHeight="36.0" prefWidth="170.0" stylesheets="@../../css/admindashboardpage.css" text="Creat new patient ">
                <styleClass>
                   <String fx:value="search" />
                   <String fx:value="btnCreate" />

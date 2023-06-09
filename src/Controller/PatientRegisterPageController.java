@@ -86,29 +86,6 @@ public class PatientRegisterPageController implements Initializable {
         // TODO
     }
 
-    @FXML
-    private void showFirstName(ActionEvent event) {
-    }
-
-    @FXML
-    private void showLastName(ActionEvent event) {
-    }
-
-    @FXML
-    private void showAge(ActionEvent event) {
-    }
-
-    @FXML
-    private void showEmail(ActionEvent event) {
-    }
-
-    @FXML
-    private void showPassword(ActionEvent event) {
-    }
-
-    @FXML
-    private void showUserName(ActionEvent event) {
-    }
 
     private void showBtnOk(ActionEvent event) throws SQLException, ClassNotFoundException {
         String userName = txtUserName.getText();
@@ -131,9 +108,6 @@ public class PatientRegisterPageController implements Initializable {
 
     }
 
-    @FXML
-    private void showPhone(ActionEvent event) {
-    }
 
     @FXML
     private void signup(ActionEvent event) {

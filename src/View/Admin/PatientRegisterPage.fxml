@@ -68,12 +68,12 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="txtFirstName" layoutX="181.0" layoutY="180.0" onAction="#showFirstName" prefHeight="31.0" prefWidth="214.0" promptText="Enter Your First Name" />
-            <TextField fx:id="txtLastName" layoutX="181.0" layoutY="225.0" onAction="#showLastName" prefHeight="31.0" prefWidth="214.0" promptText="Enter Your Last Name" />
-            <TextField fx:id="txtAge" layoutX="181.0" layoutY="270.0" onAction="#showAge" prefHeight="31.0" prefWidth="214.0" promptText="Enter Your Age" />
-            <TextField fx:id="txtEmail" layoutX="181.0" layoutY="315.0" onAction="#showEmail" prefHeight="31.0" prefWidth="214.0" promptText="Enter Your Email" />
-            <TextField fx:id="txtPassword" layoutX="181.0" layoutY="135.0" onAction="#showPassword" prefHeight="31.0" prefWidth="214.0" promptText="Enter Your Password" />
-            <TextField fx:id="txtUserName" layoutX="181.0" layoutY="90.0" onAction="#showUserName" prefHeight="31.0" prefWidth="214.0" promptText="Enter Your User Name" />
+            <TextField fx:id="txtFirstName" layoutX="181.0" layoutY="180.0" prefHeight="31.0" prefWidth="214.0" promptText="Enter Your First Name" />
+            <TextField fx:id="txtLastName" layoutX="181.0" layoutY="225.0" prefHeight="31.0" prefWidth="214.0" promptText="Enter Your Last Name" />
+            <TextField fx:id="txtAge" layoutX="181.0" layoutY="270.0" prefHeight="31.0" prefWidth="214.0" promptText="Enter Your Age" />
+            <TextField fx:id="txtEmail" layoutX="181.0" layoutY="315.0" prefHeight="31.0" prefWidth="214.0" promptText="Enter Your Email" />
+            <TextField fx:id="txtPassword" layoutX="181.0" layoutY="135.0" prefHeight="31.0" prefWidth="214.0" promptText="Enter Your Password" />
+            <TextField fx:id="txtUserName" layoutX="181.0" layoutY="90.0" prefHeight="31.0" prefWidth="214.0" promptText="Enter Your User Name" />
             <Label fx:id="enterYourInformation" layoutX="100.0" layoutY="23.0" styleClass="labelryi" stylesheets="@../../css/PatientRegisterPagestyle.css" text="Enter Your Information">
                <font>
                   <Font size="25.0" />
@@ -114,7 +114,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="txtPhone" layoutX="181.0" layoutY="360.0" onAction="#showPhone" prefHeight="31.0" prefWidth="214.0" promptText="Enter Your Phone" />
+            <TextField fx:id="txtPhone" layoutX="181.0" layoutY="360.0" prefHeight="31.0" prefWidth="214.0" promptText="Enter Your Phone" />
          </children>
       </AnchorPane>
    </children>

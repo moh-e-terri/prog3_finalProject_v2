@@ -10,6 +10,7 @@ import Model.Booked_Appointment;
 import Model.User;
 import View.PatientPage;
 import View.ViewManager;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,17 +19,24 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -112,12 +120,15 @@ public class AdminDashboardPageController implements Initializable {
     @FXML
     private Button btnLeaveComment;
 
+    public static User selectedUserToUpdate;
+    public static Stage updateStage;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
         // To make Maping between (patientsTableView column's) and (User) object attributes
         tvID.setCellValueFactory(new PropertyValueFactory("id"));
         tvUserName.setCellValueFactory(new PropertyValueFactory("username"));
@@ -128,14 +139,14 @@ public class AdminDashboardPageController implements Initializable {
         tvPhone.setCellValueFactory(new PropertyValueFactory("phone"));
         tvGender.setCellValueFactory(new PropertyValueFactory("gender"));
         tvRole.setCellValueFactory(new PropertyValueFactory("role"));
-        
+
         // To make Maping between (freeTableView column's) and (Appointment) object attributes
         idCol.setCellValueFactory(new PropertyValueFactory("id"));
         appDateCol.setCellValueFactory(new PropertyValueFactory("appointment_date"));
         appDayCol.setCellValueFactory(new PropertyValueFactory("appointment_day"));
         appTimeCol.setCellValueFactory(new PropertyValueFactory("appointment_time"));
         statusCol.setCellValueFactory(new PropertyValueFactory("status"));
-        
+
         // To make Maping between (bookedTableView column's) and (Booked_Appointment) object attributes
         idBookedCol.setCellValueFactory(new PropertyValueFactory("id"));
         userIdCol.setCellValueFactory(new PropertyValueFactory("user_id"));
@@ -147,9 +158,9 @@ public class AdminDashboardPageController implements Initializable {
     @FXML
     private void ShowAllBookedAppointments(ActionEvent event) throws SQLException, ClassNotFoundException {
         ArrayList<Booked_Appointment> allBookedAppointments = Booked_Appointment.getAllBookedAppointments();
-        
-        ObservableList<Booked_Appointment> bookedAppointmentList = 
-                FXCollections.observableArrayList(allBookedAppointments);
+
+        ObservableList<Booked_Appointment> bookedAppointmentList
+                = FXCollections.observableArrayList(allBookedAppointments);
         bookedTableView.setItems(bookedAppointmentList);
     }
 
@@ -157,8 +168,8 @@ public class AdminDashboardPageController implements Initializable {
     private void ShowAllFreeAppointment(ActionEvent event) throws SQLException, ClassNotFoundException {
         ArrayList<Appointment> freeAppointments = new ArrayList();
         ArrayList<Appointment> allAppointments = Appointment.getAllAppointments();
-        for(Appointment a: allAppointments){
-            if(a.getStatus().equals("free")){
+        for (Appointment a : allAppointments) {
+            if (a.getStatus().equals("free")) {
                 freeAppointments.add(a);
             }
         }
@@ -169,26 +180,45 @@ public class AdminDashboardPageController implements Initializable {
     @FXML
     private void ShowallRegisterdPatientsInTheSystem(ActionEvent event) throws SQLException, ClassNotFoundException {
         ArrayList<User> allUsers = User.getAllUsers();
-        
+
         ArrayList<User> allPatientsOnly = new ArrayList<>();
-        for(User u: allUsers){
-            if(u.getRole().equals("patient"))
+        for (User u : allUsers) {
+            if (u.getRole().equals("patient")) {
                 allPatientsOnly.add(u);
+            }
         }
         ObservableList<User> allPatientsToView = FXCollections.observableArrayList(allPatientsOnly);
         patientsTableView.setItems(allPatientsToView);
     }
 
     @FXML
-    private void Searchinbookedappointments(ActionEvent event) {
-    }
-
-    @FXML
     private void createNewPatient(ActionEvent event) {
+
     }
 
+    //show updata patient stage 
     @FXML
-    private void updatePatient(ActionEvent event) {
+    private void updatePatient(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
+        //check if there is an user selected from the TableView
+        if (patientsTableView.getSelectionModel().getSelectedItem() != null) {
+            //store the selected user from the TableView in our global var user selectedUserToUpdate   
+            selectedUserToUpdate = patientsTableView.getSelectionModel().getSelectedItem();
+            //load update page fxml
+            FXMLLoader loaderUpdate = new FXMLLoader(getClass().getResource("/View/Admin/UpdataPatient.fxml"));
+            Parent rootUpdate = loaderUpdate.load();
+            Scene updateUserScene = new Scene(rootUpdate);
+            //store loaded fxml in our global stage updateStage and show it
+            updateStage = new Stage();
+            updateStage.setScene(updateUserScene);
+            updateStage.setTitle("Update user: " + selectedUserToUpdate.getUsername());
+            updateStage.show();
+            ShowallRegisterdPatientsInTheSystem(event);
+        }else{
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Selection Error");
+            alert.setContentText("You should select a patient to make update!!");
+            alert.showAndWait();
+        }
     }
 
     @FXML
@@ -198,17 +228,17 @@ public class AdminDashboardPageController implements Initializable {
     @FXML
     private void searchInPatients(ActionEvent event) throws SQLException, ClassNotFoundException {
         String patientToSearch = txtSearchInPatients.getText();  // patient first name to be searched in patients table
-        if(patientToSearch.equals("") || patientToSearch == null){
+        if (patientToSearch.equals("") || patientToSearch == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Invalid Input");
             alert.setContentText("You should enter the first name of patient you would search in !!");
             alert.showAndWait();
-        }else{
+        } else {
             ObservableList<User> patientList
                     = FXCollections.observableArrayList(User.searchInPatientsByFirstName(patientToSearch));
-            if(patientList.size() > 0)
+            if (patientList.size() > 0) {
                 patientsTableView.setItems(patientList);
-            else{
+            } else {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Not Found");
                 alert.setContentText("Patient you search in not found");
@@ -220,28 +250,24 @@ public class AdminDashboardPageController implements Initializable {
     @FXML
     private void searchInBookedAppointments(ActionEvent event) throws SQLException, ClassNotFoundException {
         String patientFirstName = txtSearchinbookedappointments.getText();  // patient first name to be searched in booked_Appointments table
-        if(patientFirstName.equals("") || patientFirstName == null){
+        if (patientFirstName.equals("") || patientFirstName == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Invalid Input");
             alert.setContentText("You should enter the first name of patient you would search in !!");
             alert.showAndWait();
-        }else{
+        } else {
 //            ArrayList<User> allPatientsByFirstName = User.searchInPatientsByFirstName(patientFirstName);
             ObservableList<Booked_Appointment> bookedAppointmentList
-            = FXCollections.observableArrayList(Booked_Appointment.searchInBookedAppointmentsByPatientFirstName(patientFirstName));
-            if(bookedAppointmentList.size() > 0)
+                    = FXCollections.observableArrayList(Booked_Appointment.searchInBookedAppointmentsByPatientFirstName(patientFirstName));
+            if (bookedAppointmentList.size() > 0) {
                 bookedTableView.setItems(bookedAppointmentList);
-            else{
+            } else {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Not Found");
                 alert.setContentText("This patient '" + patientFirstName + "' has no booked appointments");
                 alert.showAndWait();
             }
         }
-    }
-
-    @FXML
-    private void creatNewAppointment(ActionEvent event) {
     }
 
     @FXML
@@ -260,35 +286,40 @@ public class AdminDashboardPageController implements Initializable {
     @FXML
     private void leaveCommentAndFinish(ActionEvent event) throws SQLException, ClassNotFoundException {
         Booked_Appointment selectedBookedAppointment = bookedTableView.getSelectionModel().getSelectedItem();
-        if(selectedBookedAppointment != null){ 
-            if(selectedBookedAppointment.getStatus().equals("waiting")){  // if status of booked-appointment is 'waiting' do the following
+        if (selectedBookedAppointment != null) {
+            if (selectedBookedAppointment.getStatus().equals("waiting")) {  // if status of booked-appointment is 'waiting' do the following
                 TextInputDialog inputdialog = new TextInputDialog("no-comment"); // no-comment is a defualt value of inputdialog
                 inputdialog.setHeaderText("Please give some comments to this patient");
                 inputdialog.setContentText("leave your Comment: ");
                 boolean isPressedOk = inputdialog.showAndWait().isPresent(); // if user press ok will return 'true' overwise will return 'false'
 
-                if(isPressedOk){
+                if (isPressedOk) {
                     String drComment = inputdialog.getEditor().getText();
 
                     selectedBookedAppointment.setDoctor_commnet(drComment);
                     selectedBookedAppointment.setStatus("finished");
                     selectedBookedAppointment.update();
-                }else{
+                } else {
                     System.out.println("Operation is canceled");
                 }
                 ShowAllBookedAppointments(event); //ShowAllBookedAppointments(new ActionEvent());
-            }else{   // if status of booked-appointment is 'finished' do the following
+            } else {   // if status of booked-appointment is 'finished' do the following
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Selection Error");
                 alert.setContentText("This booked-appointment is already finished and has doctor comment");
                 alert.showAndWait();
             }
-        }else{
+        } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Selection Error");
             alert.setContentText("You should select a booked appointment to leave your comment !!");
             alert.showAndWait();
-        }  
+        }
     }
+
+    @FXML
+    private void createNewAppointment(ActionEvent event) {
+    }
+
 
 }

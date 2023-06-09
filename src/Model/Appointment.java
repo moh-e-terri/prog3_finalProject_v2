@@ -144,4 +144,24 @@ public class Appointment {
         c.close();
         return recordCounter;  
     }
+    
+    //Delete: delete an Appointment from users table 
+    public int delete() throws SQLException, ClassNotFoundException{
+        Connection c = DbConnection.getInstance().getConnection();
+        PreparedStatement ps = null;
+        int recordCounter =0;
+        
+        String sqlQuery = "DELETE FROM appointments WHERE ID=? ";
+        ps = c.prepareStatement(sqlQuery);
+        ps.setInt(1, this.getId());
+        recordCounter = ps.executeUpdate();
+        if (recordCounter > 0) {
+            System.out.println("The Appointment with id : "+this.getId()+" was deleted successfully!");
+        }
+        if (ps != null){
+            ps.close();
+        }
+        c.close();
+        return recordCounter;  
+    }
 }

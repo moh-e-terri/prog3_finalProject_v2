@@ -176,8 +176,8 @@ public class User {
         Connection c = DbConnection.getInstance().getConnection();
         PreparedStatement ps = null;
         int recordCounter = 0;
-        String sqlQuery = "UPDATE USERS SET username=?, password=?, firstName=?,"
-                + " lastName=?, age=?, email=?, phone=?, gentder=?, role=? WHERE id=?";
+        String sqlQuery = "UPDATE users SET username=?, password=?, firstName=?,"
+                + " lastName=?, age=?, email=?, phone=?, gender=?, role=? WHERE id=?";
         ps = c.prepareStatement(sqlQuery);
         ps.setString(1, this.getUsername());
         ps.setString(2, this.getPassword());
@@ -223,6 +223,26 @@ public class User {
         }
         c.close();
         return patients;
+    }
+    
+    //Delete: delete an user from users table 
+    public int delete() throws SQLException, ClassNotFoundException{
+        Connection c = DbConnection.getInstance().getConnection();
+        PreparedStatement ps = null;
+        int recordCounter =0;
+        
+        String sqlQuery = "DELETE FROM users WHERE ID=? ";
+        ps = c.prepareStatement(sqlQuery);
+        ps.setInt(1, this.getId());
+        recordCounter = ps.executeUpdate();
+        if (recordCounter > 0) {
+            System.out.println("The user with id : "+this.getId()+" was deleted successfully!");
+        }
+        if (ps != null){
+            ps.close();
+        }
+        c.close();
+        return recordCounter;  
     }
 
 }
