@@ -7,14 +7,13 @@ import java.io.IOException;
  * @author HP
  */
 public class ViewManager {
-     public static AdminPage adminPage;
-     public static PatientPage patientPage;
-     public static IndexPage indexPage;
 
+    public static AdminPage adminPage;
+    public static PatientPage patientPage;
+    public static IndexPage indexPage;
 
-    private ViewManager(){}
-
-    
+    private ViewManager() {
+    }
 
     public static void openAdminPage() throws IOException {
         if (adminPage == null) {
@@ -25,12 +24,14 @@ public class ViewManager {
         }
 
     }
-    public static void closeAdminPage(){
-        if(adminPage != null)
+
+    public static void closeAdminPage() {
+        if (adminPage != null) {
             adminPage.close();
+        }
     }
-    
-     public static void openPatientPage() throws IOException {
+
+    public static void openPatientPage() throws IOException {
         if (patientPage == null) {
             patientPage = new PatientPage();
             patientPage.show();
@@ -39,12 +40,14 @@ public class ViewManager {
         }
 
     }
-    public static void closePatientPage(){
-        if(patientPage != null)
+
+    public static void closePatientPage() {
+        if (patientPage != null) {
             patientPage.close();
+        }
     }
-    
-    public static void openIndexPage ()throws IOException {
+
+    public static void openIndexPage() throws IOException {
         if (indexPage == null) {
             indexPage = new IndexPage();
             indexPage.show();
@@ -53,8 +56,10 @@ public class ViewManager {
         }
 
     }
-    public static void closeIndexPage(){
-        if(indexPage != null)
+
+    public static void closeIndexPage() {
+        if (indexPage != null) {
             indexPage.close();
+        }
     }
 }

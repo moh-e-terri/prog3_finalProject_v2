@@ -17,14 +17,13 @@ import javafx.stage.Stage;
  * @author HP
  */
 public class PatientPage extends Stage {
-    
+
     private Scene patientLoginPageScene;
     private Scene patientRegisterPageScene;
     public static Scene patientDachboardPageScene;
-    
+
     public static User logedInPatient;  // the patient has beed loged in
-    
-    
+
     public PatientPage() throws IOException {
         //load patientLoginPage FXML File in patientLogin Scene
         FXMLLoader patientLoginLoader = new FXMLLoader(getClass().getResource("/View/Admin/PatientLoginPage.fxml"));
@@ -40,17 +39,14 @@ public class PatientPage extends Stage {
 //        FXMLLoader patientDachboardLoader = new FXMLLoader(getClass().getResource("/View/Admin/PatientDashboardPage.fxml"));
 //        Parent patientDachboardRoot = patientDachboardLoader.load();
 //        patientDachboardPageScene = new Scene(patientDachboardRoot);
-
-
         this.setScene(patientLoginPageScene);
         this.setTitle("Patient Login Page");
         this.show();
-        
+
         /* 
             for testing
-        */
+         */
 //        this.setScene(patientDachboardPageScene);
-
     }
 
     public void changeSceneToPatientLoginPage() {

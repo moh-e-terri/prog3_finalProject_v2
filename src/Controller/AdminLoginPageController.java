@@ -5,18 +5,16 @@
  */
 package Controller;
 
-import Model.User;
 import View.ViewManager;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 /**
@@ -31,7 +29,9 @@ public class AdminLoginPageController implements Initializable {
     @FXML
     private TextField txtPassword;
     @FXML
-    private Button btnOk;
+    private Button btnLogin;
+    @FXML
+    private Button btnBack;
 
     private final String adminUsername = "admin";  // admin username to enter to the system
     private final String adminPassword = "123";  // admin password to enter to the system
@@ -52,12 +52,18 @@ public class AdminLoginPageController implements Initializable {
         if (username.equals(adminUsername) && password.equals(adminPassword)) {
             ViewManager.adminPage.changeSceneToAdminDachboardPage();
             this.txtPassword.setText("");
-        }else{
+        } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("login alert");
             alert.setContentText("Incorrect Username Or Password!\nPlease try again..");
             alert.showAndWait();
         }
+    }
+
+    @FXML
+    private void goBack(ActionEvent event) throws IOException {
+        ViewManager.closeAdminPage();
+        ViewManager.openIndexPage();
     }
 
 }

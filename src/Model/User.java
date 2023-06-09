@@ -121,8 +121,8 @@ public class User {
         Connection c = DbConnection.getInstance().getConnection();
         PreparedStatement ps = null;
         int recordCounter = 0;
-        String sqlQuery = "INSERT INTO users (id,username,password,firstName,lastName,"
-                + "age,email,phone,gender,role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sqlQuery = "INSERT INTO users (id, username, password, firstName, lastName"
+                + ", age, email, phone, gender, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         ps = c.prepareStatement(sqlQuery);
 
         ps.setInt(1, this.getId());
@@ -133,8 +133,9 @@ public class User {
         ps.setInt(6, this.getAge());
         ps.setString(7, this.getEmail());
         ps.setString(8, this.getPhone());
-        ps.setString(8, this.getGender());
+        ps.setString(9, this.getGender());
         ps.setString(10, this.getRole());
+        
         recordCounter = ps.executeUpdate();
         if (recordCounter > 0) {
             System.out.println(this.getUsername()

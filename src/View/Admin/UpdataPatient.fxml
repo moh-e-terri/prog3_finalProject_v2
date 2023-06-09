@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import javafx.scene.control.*?>
@@ -74,34 +75,49 @@
             </Label>
             <Button fx:id="btnConfirmEdits" layoutX="80.0" layoutY="520.0" mnemonicParsing="false" onAction="#confirmEdits" prefHeight="36.0" prefWidth="153.0" stylesheets="@../../css/PatientRegisterPagestyle.css" text="Confirm Edits">
                <font>
-                  <Font size="15.0" />
+                  <Font name="System Bold" size="15.0" />
                </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
-            <RadioButton fx:id="radioMale" layoutX="218.0" layoutY="422.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="67.0" selected="true" styleClass="label" stylesheets="@../../css/PatientRegisterPagestyle.css" text="Male">
+            <RadioButton fx:id="radioMale" layoutX="218.0" layoutY="422.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="67.0" selected="true" styleClass="label" stylesheets="@../../css/PatientRegisterPagestyle.css" text="male">
                <toggleGroup>
                   <ToggleGroup fx:id="groupGender" />
                </toggleGroup>
                <font>
                   <Font size="15.0" />
                </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </RadioButton>
-            <RadioButton fx:id="radioFemale" layoutX="336.0" layoutY="422.0" mnemonicParsing="false" styleClass="label" stylesheets="@../../css/PatientRegisterPagestyle.css" text="Female" toggleGroup="$groupGender">
+            <RadioButton fx:id="radioFemale" layoutX="336.0" layoutY="422.0" mnemonicParsing="false" styleClass="label" stylesheets="@../../css/PatientRegisterPagestyle.css" text="female" toggleGroup="$groupGender">
                <font>
                   <Font size="15.0" />
                </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </RadioButton>
-            <RadioButton fx:id="radioAdmail" layoutX="218.0" layoutY="457.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="75.0" selected="true" styleClass="label" stylesheets="@../../css/PatientRegisterPagestyle.css" text="Admin">
+            <RadioButton fx:id="radioAdmail" layoutX="218.0" layoutY="457.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="75.0" selected="true" styleClass="label" stylesheets="@../../css/PatientRegisterPagestyle.css" text="admin">
                <font>
                   <Font size="15.0" />
                </font>
                <toggleGroup>
                   <ToggleGroup fx:id="groupRole" />
                </toggleGroup>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </RadioButton>
             <RadioButton fx:id="radioPatient" layoutX="336.0" layoutY="457.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="75.0" styleClass="label" stylesheets="@../../css/PatientRegisterPagestyle.css" text="patient" toggleGroup="$groupRole">
                <font>
                   <Font size="15.0" />
                </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </RadioButton>
             <Label layoutX="79.0" layoutY="371.0" prefHeight="27.0" prefWidth="95.0" stylesheets="@../../css/PatientRegisterPagestyle.css" text="Phone">
                <font>
@@ -109,7 +125,13 @@
                </font>
             </Label>
             <TextField fx:id="txtPhone" layoutX="213.0" layoutY="369.0" prefHeight="31.0" prefWidth="214.0" promptText="Enter Your Phone" />
-            <Button fx:id="btnCancel" layoutX="313.0" layoutY="520.0" mnemonicParsing="false" onAction="#cancelUpdate" prefHeight="36.0" prefWidth="114.0" style="-fx-background-color: EB5353;" text="Cancel" textFill="WHITE" />
+            <Button fx:id="btnCancel" layoutX="312.0" layoutY="520.0" mnemonicParsing="false" onAction="#cancelUpdate" prefHeight="36.0" prefWidth="114.0" style="-fx-background-color: EB5353;" text="Cancel" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font></Button>
          </children>
       </AnchorPane>
    </children>

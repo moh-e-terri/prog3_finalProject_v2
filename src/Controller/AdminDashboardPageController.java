@@ -8,13 +8,14 @@ package Controller;
 import Model.Appointment;
 import Model.Booked_Appointment;
 import Model.User;
-import View.PatientPage;
 import View.ViewManager;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,8 +26,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -34,6 +33,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -66,27 +66,9 @@ public class AdminDashboardPageController implements Initializable {
     @FXML
     private TableColumn<User, String> tvRole;
     @FXML
-    private Button btnLogout;
-    @FXML
-    private Button btnShowAllBookedAppointments;
-    @FXML
-    private Button btnDelelte;
-    @FXML
-    private Button btnShowAllFreeAppointment;
-    @FXML
-    private Button btnShowallRegisterdPatientsInTheSystem;
-    @FXML
     private TextField txtSearchInPatients;
     @FXML
-    private Button btnSearchInPatients;
-    @FXML
-    private Button btnSearchInBookedAppointments;
-    @FXML
     private TextField txtSearchinbookedappointments;
-    @FXML
-    private Button btnCreateNewPatient;
-    @FXML
-    private Button btnUpdataPatient;
     @FXML
     private TableView<Appointment> freeTableView;
     @FXML
@@ -100,12 +82,6 @@ public class AdminDashboardPageController implements Initializable {
     @FXML
     private TableColumn<Appointment, String> statusCol;
     @FXML
-    private Button btnCreatNewAppointment;
-    @FXML
-    private Button btnUpdateAppointment;
-    @FXML
-    private Button btnDeleteAppointment;
-    @FXML
     private TableView<Booked_Appointment> bookedTableView;
     @FXML
     private TableColumn<Booked_Appointment, Integer> idBookedCol;
@@ -118,10 +94,52 @@ public class AdminDashboardPageController implements Initializable {
     @FXML
     private TableColumn<Booked_Appointment, String> docCommentCol;
     @FXML
-    private Button btnLeaveComment;
+    private AnchorPane parent;
+    @FXML
+    private ImageView imgMode;
+    @FXML
+
+    private Label mode;
+    private boolean isLightMode = true;
 
     public static User selectedUserToUpdate;
-    public static Stage updateStage;
+    public static Stage updatePatientStage;
+    public static Appointment selectedAppointmentToUpdate;
+    public static Stage updateAppointmentStage;
+
+//    public static User newPatientCreated;
+    public static Stage createPatientStage;
+//    public static Appointment newAppointmentCreated;
+    public static Stage createAppointmentStage;
+
+    @FXML
+    private Button btnCreateNewPatient;
+    @FXML
+    private Button btnUpdataPatient;
+    @FXML
+    private Button btnShowAllBookedAppointments;
+    @FXML
+    private Button btnDelelte;
+    @FXML
+    private Button btnShowAllFreeAppointment;
+    @FXML
+    private Button btnShowallRegisterdPatientsInTheSystem;
+    @FXML
+    private Button btnSearchInPatients;
+    @FXML
+    private Button btnSearchInBookedAppointments;
+    @FXML
+    private Button btnUpdateAppointment;
+    @FXML
+    private Button btnDeleteAppointment;
+    @FXML
+    private Button btnLeaveComment;
+    @FXML
+    private Button btnLogout;
+    @FXML
+    private Button btnMode;
+    @FXML
+    private Button btnCreateNewAppointment;
 
     /**
      * Initializes the controller class.
@@ -156,76 +174,6 @@ public class AdminDashboardPageController implements Initializable {
     }
 
     @FXML
-    private void ShowAllBookedAppointments(ActionEvent event) throws SQLException, ClassNotFoundException {
-        ArrayList<Booked_Appointment> allBookedAppointments = Booked_Appointment.getAllBookedAppointments();
-
-        ObservableList<Booked_Appointment> bookedAppointmentList
-                = FXCollections.observableArrayList(allBookedAppointments);
-        bookedTableView.setItems(bookedAppointmentList);
-    }
-
-    @FXML
-    private void ShowAllFreeAppointment(ActionEvent event) throws SQLException, ClassNotFoundException {
-        ArrayList<Appointment> freeAppointments = new ArrayList();
-        ArrayList<Appointment> allAppointments = Appointment.getAllAppointments();
-        for (Appointment a : allAppointments) {
-            if (a.getStatus().equals("free")) {
-                freeAppointments.add(a);
-            }
-        }
-        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList(freeAppointments);
-        freeTableView.setItems(appointmentList);
-    }
-
-    @FXML
-    private void ShowallRegisterdPatientsInTheSystem(ActionEvent event) throws SQLException, ClassNotFoundException {
-        ArrayList<User> allUsers = User.getAllUsers();
-
-        ArrayList<User> allPatientsOnly = new ArrayList<>();
-        for (User u : allUsers) {
-            if (u.getRole().equals("patient")) {
-                allPatientsOnly.add(u);
-            }
-        }
-        ObservableList<User> allPatientsToView = FXCollections.observableArrayList(allPatientsOnly);
-        patientsTableView.setItems(allPatientsToView);
-    }
-
-    @FXML
-    private void createNewPatient(ActionEvent event) {
-
-    }
-
-    //show updata patient stage 
-    @FXML
-    private void updatePatient(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
-        //check if there is an user selected from the TableView
-        if (patientsTableView.getSelectionModel().getSelectedItem() != null) {
-            //store the selected user from the TableView in our global var user selectedUserToUpdate   
-            selectedUserToUpdate = patientsTableView.getSelectionModel().getSelectedItem();
-            //load update page fxml
-            FXMLLoader loaderUpdate = new FXMLLoader(getClass().getResource("/View/Admin/UpdataPatient.fxml"));
-            Parent rootUpdate = loaderUpdate.load();
-            Scene updateUserScene = new Scene(rootUpdate);
-            //store loaded fxml in our global stage updateStage and show it
-            updateStage = new Stage();
-            updateStage.setScene(updateUserScene);
-            updateStage.setTitle("Update user: " + selectedUserToUpdate.getUsername());
-            updateStage.show();
-            ShowallRegisterdPatientsInTheSystem(event);
-        }else{
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Selection Error");
-            alert.setContentText("You should select a patient to make update!!");
-            alert.showAndWait();
-        }
-    }
-
-    @FXML
-    private void deleltePatient(ActionEvent event) {
-    }
-
-    @FXML
     private void searchInPatients(ActionEvent event) throws SQLException, ClassNotFoundException {
         String patientToSearch = txtSearchInPatients.getText();  // patient first name to be searched in patients table
         if (patientToSearch.equals("") || patientToSearch == null) {
@@ -248,6 +196,87 @@ public class AdminDashboardPageController implements Initializable {
     }
 
     @FXML
+    private void ShowallRegisterdPatientsInTheSystem(ActionEvent event) throws SQLException, ClassNotFoundException {
+        ArrayList<User> allUsers = User.getAllUsers();
+
+        ArrayList<User> allPatientsOnly = new ArrayList<>();
+        for (User u : allUsers) {
+            if (u.getRole().equals("patient")) {
+                allPatientsOnly.add(u);
+            }
+        }
+        ObservableList<User> allPatientsToView = FXCollections.observableArrayList(allPatientsOnly);
+        patientsTableView.setItems(allPatientsToView);
+    }
+
+    @FXML
+    private void createNewPatient(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
+        FXMLLoader loaderUpdate = new FXMLLoader(getClass().getResource("/View/Admin/PatientRegisterPage.fxml"));
+        Parent rootcreate = loaderUpdate.load();
+        Scene createUserScene = new Scene(rootcreate);
+
+        createPatientStage = new Stage();
+        createPatientStage.setScene(createUserScene);
+        createPatientStage.setTitle("Create New Patient");
+        createPatientStage.show();
+        ShowallRegisterdPatientsInTheSystem(event);
+    }
+
+    //updata patient stage 
+    @FXML
+    private void updatePatient(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
+        //check if there is an user selected from the TableView
+        if (patientsTableView.getSelectionModel().getSelectedItem() != null) {
+            //store the selected user from the TableView in our global var user selectedUserToUpdate   
+            selectedUserToUpdate = patientsTableView.getSelectionModel().getSelectedItem();
+            //load update page fxml
+            FXMLLoader loaderUpdate = new FXMLLoader(getClass().getResource("/View/Admin/UpdataPatient.fxml"));
+            Parent rootUpdate = loaderUpdate.load();
+            Scene updateUserScene = new Scene(rootUpdate);
+            //store loaded fxml in our global stage updateStage and show it
+            updatePatientStage = new Stage();
+            updatePatientStage.setScene(updateUserScene);
+            updatePatientStage.setTitle("Update user: " + selectedUserToUpdate.getUsername());
+            updatePatientStage.showAndWait();
+            ShowallRegisterdPatientsInTheSystem(event);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Selection Error");
+            alert.setContentText("You should select a patient to make update!!");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    private void deletePatient(ActionEvent event) throws SQLException, ClassNotFoundException {
+        //check if there is an user selected from the TableView
+        if (patientsTableView.getSelectionModel().getSelectedItem() != null) {
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirm Deletion");
+            alert.setContentText("Are you sure you want to delete this Patient?");
+            alert.showAndWait().ifPresent(ans -> {
+                if (ans == ButtonType.OK) {
+                    User selectedUser = patientsTableView.getSelectionModel().getSelectedItem();
+                    try {
+                        selectedUser.delete();
+                        ShowallRegisterdPatientsInTheSystem(event);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(AdminDashboardPageController.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(AdminDashboardPageController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Selection Error");
+            alert.setContentText("You should select a patient to delete him!!");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
     private void searchInBookedAppointments(ActionEvent event) throws SQLException, ClassNotFoundException {
         String patientFirstName = txtSearchinbookedappointments.getText();  // patient first name to be searched in booked_Appointments table
         if (patientFirstName.equals("") || patientFirstName == null) {
@@ -256,7 +285,6 @@ public class AdminDashboardPageController implements Initializable {
             alert.setContentText("You should enter the first name of patient you would search in !!");
             alert.showAndWait();
         } else {
-//            ArrayList<User> allPatientsByFirstName = User.searchInPatientsByFirstName(patientFirstName);
             ObservableList<Booked_Appointment> bookedAppointmentList
                     = FXCollections.observableArrayList(Booked_Appointment.searchInBookedAppointmentsByPatientFirstName(patientFirstName));
             if (bookedAppointmentList.size() > 0) {
@@ -271,16 +299,12 @@ public class AdminDashboardPageController implements Initializable {
     }
 
     @FXML
-    private void updateAppointment(ActionEvent event) {
-    }
+    private void ShowAllBookedAppointments(ActionEvent event) throws SQLException, ClassNotFoundException {
+        ArrayList<Booked_Appointment> allBookedAppointments = Booked_Appointment.getAllBookedAppointments();
 
-    @FXML
-    private void deleteAppointment(ActionEvent event) {
-    }
-
-    @FXML
-    private void logout(ActionEvent event) {
-        ViewManager.adminPage.changeSceneToAdminLoginPage();
+        ObservableList<Booked_Appointment> bookedAppointmentList
+                = FXCollections.observableArrayList(allBookedAppointments);
+        bookedTableView.setItems(bookedAppointmentList);
     }
 
     @FXML
@@ -318,8 +342,121 @@ public class AdminDashboardPageController implements Initializable {
     }
 
     @FXML
-    private void createNewAppointment(ActionEvent event) {
+    private void ShowAllFreeAppointment(ActionEvent event) throws SQLException, ClassNotFoundException {
+        ArrayList<Appointment> freeAppointments = new ArrayList();
+        ArrayList<Appointment> allAppointments = Appointment.getAllAppointments();
+        for (Appointment a : allAppointments) {
+            if (a.getStatus().equals("free")) {
+                freeAppointments.add(a);
+            }
+        }
+        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList(freeAppointments);
+        freeTableView.setItems(appointmentList);
     }
 
+    @FXML
+    private void createNewAppointment(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
+        FXMLLoader loaderUpdate = new FXMLLoader(getClass().getResource("/View/Admin/CreateAppointment.fxml"));
+        Parent rootcreate = loaderUpdate.load();
+        Scene createAppointmentScene = new Scene(rootcreate);
+
+        createAppointmentStage = new Stage();
+        createAppointmentStage.setScene(createAppointmentScene);
+        createAppointmentStage.setTitle("Create New Appointment");
+        createAppointmentStage.show();
+        ShowAllFreeAppointment(event);
+    }
+
+    @FXML
+    private void updateAppointment(ActionEvent event) throws IOException, SQLException, ClassNotFoundException {
+        if (freeTableView.getSelectionModel().getSelectedItem() != null) {
+            selectedAppointmentToUpdate = freeTableView.getSelectionModel().getSelectedItem();
+
+            FXMLLoader loaderUpdate = new FXMLLoader(getClass().getResource("/View/Admin/UdateAppointment.fxml"));
+            Parent rootUpdate = loaderUpdate.load();
+            Scene updateUserScene = new Scene(rootUpdate);
+
+            updateAppointmentStage = new Stage();
+            updateAppointmentStage.setScene(updateUserScene);
+            updateAppointmentStage.setTitle("Update appointment with ID: " + selectedAppointmentToUpdate.getId());
+            updateAppointmentStage.showAndWait();
+            ShowAllFreeAppointment(event);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Selection Error");
+            alert.setContentText("You should select an appointment to make update!!");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    private void deleteAppointment(ActionEvent event) throws SQLException, ClassNotFoundException {
+        if (freeTableView.getSelectionModel().getSelectedItem() != null) {
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirm Deletion");
+            alert.setContentText("Are you sure you want to delete this Appointment?");
+            alert.showAndWait().ifPresent(ans -> {
+                if (ans == ButtonType.OK) {
+                    Appointment selectedAppoitment = freeTableView.getSelectionModel().getSelectedItem();
+                    try {
+                        selectedAppoitment.delete();
+                        ShowAllFreeAppointment(event);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(AdminDashboardPageController.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(AdminDashboardPageController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Selection Error");
+            alert.setContentText("You should select an appointment to delete him!!");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    private void showBtnMode(ActionEvent event) {
+        isLightMode = !isLightMode;
+        if (isLightMode) {
+            setLightMode();
+        } else {
+            setDarkMode();
+        }
+    }
+
+    private void setLightMode() {
+        parent.getStylesheets().remove("/css/admindashboardPageDarkMode.css");
+        parent.getStylesheets().add("/css/admindashboardPageLightMode.css");
+        Image image = new Image("/image/dark.png");
+        imgMode.setImage(image);
+        mode.setText("Dark Mode");
+
+        isLightMode = true;
+    }
+
+    private void setDarkMode() {
+        parent.getStylesheets().remove("/css/admindashboardPageLightMode.css");
+        parent.getStylesheets().add("/css/admindashboardPageDarkMode.css");
+        Image image = new Image("/image/light.png");
+        imgMode.setImage(image);
+        mode.setText("Light Mode");
+
+        isLightMode = false;
+    }
+
+    @FXML
+    private void logout(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Logout");
+        alert.setContentText("Are you sure you want to Logout?");
+        alert.showAndWait().ifPresent(ans -> {
+            if (ans == ButtonType.OK) {
+                ViewManager.adminPage.changeSceneToAdminLoginPage();
+            }
+        });
+    }
 
 }

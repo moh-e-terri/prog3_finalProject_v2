@@ -14,12 +14,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 
 /**
  * FXML Controller class
@@ -28,22 +25,6 @@ import javafx.scene.layout.AnchorPane;
  */
 public class PatientRegisterPageController implements Initializable {
 
-    @FXML
-    private Label userName;
-    @FXML
-    private Label password;
-    @FXML
-    private Label firstName;
-    @FXML
-    private Label lastName;
-    @FXML
-    private Label age;
-    @FXML
-    private Label role;
-    @FXML
-    private Label email;
-    @FXML
-    private Label gender;
     @FXML
     private TextField txtFirstName;
     @FXML
@@ -57,12 +38,9 @@ public class PatientRegisterPageController implements Initializable {
     @FXML
     private TextField txtUserName;
     @FXML
-    private Label enterYourInformation;
-    @FXML
     private ToggleGroup groupGender;
     @FXML
     private ToggleGroup groupRole;
-
     @FXML
     private RadioButton radioMale;
     @FXML
@@ -72,11 +50,11 @@ public class PatientRegisterPageController implements Initializable {
     @FXML
     private RadioButton radioPatient;
     @FXML
-    private Label phone;
-    @FXML
     private TextField txtPhone;
     @FXML
     private Button btnSignup;
+    @FXML
+    private Button btnCancel;
 
     /**
      * Initializes the controller class.
@@ -86,31 +64,42 @@ public class PatientRegisterPageController implements Initializable {
         // TODO
     }
 
+    @FXML
+    private void signup(ActionEvent event) throws SQLException, ClassNotFoundException {
+        if (txtUserName.getText().isEmpty() || txtPassword.getText().isEmpty() || txtFirstName.getText().isEmpty()
+                || txtLastName.getText().isEmpty() || txtAge.getText().isEmpty() || txtEmail.getText().isEmpty() || txtPhone.getText().isEmpty()) {
 
-    private void showBtnOk(ActionEvent event) throws SQLException, ClassNotFoundException {
-        String userName = txtUserName.getText();
-        String password = txtPassword.getText();
-        String firstName = txtFirstName.getText();
-        String lastName = txtLastName.getText();
-        int age = Integer.parseInt(txtAge.getText());
-        String email = txtEmail.getText();
-        String gender = ((RadioButton) groupGender.getSelectedToggle()).getText();
-        String role = ((RadioButton) groupRole.getSelectedToggle()).getText();
-        String phone = txtPhone.getText();
-        User user = new User(userName, password, firstName, lastName, age, email, phone, gender, role);
-        user.save();
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Error Input");
+            alert.setContentText("There are 'empty' fields \nplease fill all fields.");
+            alert.showAndWait();
+        } else {
+            String userName = txtUserName.getText();
+            String password = txtPassword.getText();
+            String firstName = txtFirstName.getText();
+            String lastName = txtLastName.getText();
+            int age = Integer.parseInt(txtAge.getText());
+            String email = txtEmail.getText();
+            String phone = txtPhone.getText();
+            String gender = ((RadioButton) groupGender.getSelectedToggle()).getText();
+            String role = ((RadioButton) groupRole.getSelectedToggle()).getText();
 
-        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-        successAlert.setTitle("Success");
-        successAlert.setHeaderText(null);
-        successAlert.setContentText("Patient registered successfully!");
-        successAlert.showAndWait();
+            User user = new User(userName, password, firstName, lastName, age, email, phone, gender, role);
+            user.save();
 
+            AdminDashboardPageController.createPatientStage.close();
+
+            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+            successAlert.setTitle("Patient Creation");
+            successAlert.setHeaderText(null);
+            successAlert.setContentText("Patient registered successfully!");
+            successAlert.showAndWait();
+        }
     }
 
-
     @FXML
-    private void signup(ActionEvent event) {
+    private void cancelSignup(ActionEvent event) {
+        AdminDashboardPageController.createPatientStage.close();
     }
 
 }

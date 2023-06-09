@@ -14,8 +14,7 @@ public class Appointment {
     private String appointment_time;
     private String status;  // enum('free', 'booked')
 
-    public Appointment(String appointment_date, String appointment_day,
-            String appointment_time, String status) {
+    public Appointment(String appointment_date, String appointment_day, String appointment_time, String status) {
         this.appointment_date = appointment_date;
         this.appointment_day = appointment_day;
         this.appointment_time = appointment_time;
@@ -145,7 +144,7 @@ public class Appointment {
         return recordCounter;  
     }
     
-    //Delete: delete an Appointment from users table 
+    //Delete: delete an user from users table 
     public int delete() throws SQLException, ClassNotFoundException{
         Connection c = DbConnection.getInstance().getConnection();
         PreparedStatement ps = null;
@@ -156,7 +155,7 @@ public class Appointment {
         ps.setInt(1, this.getId());
         recordCounter = ps.executeUpdate();
         if (recordCounter > 0) {
-            System.out.println("The Appointment with id : "+this.getId()+" was deleted successfully!");
+            System.out.println("The appointment with id : "+this.getId()+" was deleted successfully!");
         }
         if (ps != null){
             ps.close();

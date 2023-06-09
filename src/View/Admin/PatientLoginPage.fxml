@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
+<?import javafx.scene.effect.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -24,23 +26,39 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="385.0" prefHeight="388.0" prefWidth="398.0">
+      <AnchorPane layoutX="385.0" prefHeight="388.0" prefWidth="398.0" style="-fx-background-color: #fff;">
          <children>
-            <AnchorPane layoutX="40.0" layoutY="55.0" prefHeight="295.0" prefWidth="333.0">
+            <AnchorPane layoutX="40.0" layoutY="55.0" prefHeight="324.0" prefWidth="333.0" style="-fx-background-color: #fff;">
                <children>
-                  <TextField fx:id="txtUserName" layoutX="29.0" layoutY="106.0" prefHeight="42.0" prefWidth="275.0" promptText="Username" />
-                  <TextField fx:id="txtPassword" layoutX="29.0" layoutY="167.0" prefHeight="42.0" prefWidth="275.0" promptText="Password" />
-                  <Button fx:id="btnLogin" layoutX="110.0" layoutY="235.0" mnemonicParsing="false" onAction="#patientLogin" prefHeight="36.0" prefWidth="115.0" stylesheets="@../../css/style.css" text="Login">
+                  <TextField fx:id="txtUserName" layoutX="29.0" layoutY="96.0" prefHeight="42.0" prefWidth="275.0" promptText="Username" />
+                  <TextField fx:id="txtPassword" layoutX="29.0" layoutY="153.0" prefHeight="42.0" prefWidth="275.0" promptText="Password" />
+                  <Button fx:id="btnLogin" layoutX="101.0" layoutY="214.0" mnemonicParsing="false" onAction="#patientLogin" prefHeight="40.0" prefWidth="131.0" stylesheets="@../../css/style.css" text="Login">
                      <font>
-                        <Font size="15.0" />
-                     </font></Button>
-                  <Label layoutX="107.0" layoutY="14.0" prefHeight="40.0" prefWidth="121.0" stylesheets="@../../css/style.css" text="Welcome">
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Button>
+                  <Label layoutX="106.0" layoutY="14.0" prefHeight="40.0" prefWidth="121.0" stylesheets="@../../css/style.css" text="Welcome">
                      <font>
                         <Font size="28.0" />
                      </font>
                   </Label>
+                  <Button fx:id="btnPatientRegister" layoutX="82.0" layoutY="279.0" mnemonicParsing="false" onAction="#registerPatient" style="-fx-background-color: #fff;" text="Don't hava an account" textFill="#1c68ff" underline="true">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
                </children>
             </AnchorPane>
+            <Button fx:id="btnBack" layoutX="323.0" layoutY="25.0" mnemonicParsing="false" onAction="#goBack" prefHeight="40.0" prefWidth="43.0" style="-fx-background-color: #135fff;" text="➜" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
          </children>
       </AnchorPane>
    </children>

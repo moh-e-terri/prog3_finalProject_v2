@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package View;
 
 import java.io.IOException;
@@ -11,15 +6,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- *
- * @author HP
- */
 public class IndexPage extends Stage {
 
-    private Scene indexPageScene;
+    private Scene indexPageScene; // scene as attribute
 
     public IndexPage() throws IOException {
+        
         //load adminDachboard FXML File in adminDachboard Scene
         FXMLLoader indexLoader = new FXMLLoader(getClass().getResource("/View/Admin/index.fxml"));
         Parent indexRoot = indexLoader.load();

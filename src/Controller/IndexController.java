@@ -25,16 +25,18 @@ public class IndexController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     @FXML
     private void showAdminLoginPage(ActionEvent event) throws IOException {
+        ViewManager.closeIndexPage();
         ViewManager.openAdminPage();
     }
 
     @FXML
     private void showPatientLoginPage(ActionEvent event) throws IOException {
+        ViewManager.closeIndexPage();
         ViewManager.openPatientPage();
     }
-    
+
 }
